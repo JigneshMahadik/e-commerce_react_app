@@ -98,10 +98,11 @@ export function Navbar(){
                     </svg>
                     </button> */}
                     {/* Dark Mode */}
-                    {
+                    {/* {
                         user ?(<p id="logged-user" onClick={logout}>{user}</p>):(<p id="signup" onClick={signup}>Sign Up</p>)
-                    }
-                    {/* <p id="signup" onClick={signup}>Sign Up</p> */}
+                    } */}
+                    <p id="signup">Sign Up</p>
+                    <p id="signup">Login</p>
                     <NavLink to="/cart">
                         <div id="cart-cont">
                             <img src={cart} width={30} className="mr-1" id="cart-icon"/>

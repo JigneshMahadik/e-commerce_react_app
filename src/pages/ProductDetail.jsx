@@ -1,7 +1,35 @@
 import { Navbar } from "../components/Navbar";
 import pro2 from "../components/assets/pro-5.jpeg"
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 export function ProductDetail(){
+
+    const [ productDetail, setProductDetail ] = useState([]);
+    const param = useParams();
+    // console.log(param.product_id);
+
+    useEffect(()=>{
+        getProductDetail();
+    },[])
+
+    async function getProductDetail(){
+        const res = await axios.get(`http://127.0.0.1:8000/api/product/${param.product_id}`)
+        setProductDetail(res.data.data);
+        // console.log(res.data.data);
+
+    }
+    // useEffect(()=>{
+    //     getCategories();
+    //   })
+      
+    //   async function getCategories(e){
+    //     const res = await axios.get("https://c99d-203-109-66-32.ngrok-free.app/api/categories");
+    //     console.log("Res",res);
+    //     e.preventDefault();
+    //   }
+      
     return(
         <div>
             <Navbar/>
@@ -10,7 +38,7 @@ export function ProductDetail(){
                     <div class="flex flex-col md:flex-row -mx-4" id="pro-det-card">
                         <div class="md:flex-1 px-4">
                             <div class="h-[460px] rounded-lg bg-gray-300 mb-4">
-                                <img class="w-full h-full object-cover" src={pro2} alt="Product Image" />
+                                <img class="w-full h-full object-cover" src={productDetail.image} alt="Product Image" />
                             </div>
                             <div class="flex -mx-2 mb-4">
                                 <div class="w-1/2 px-2">
@@ -23,13 +51,13 @@ export function ProductDetail(){
                         </div>
                         <div class="md:flex-1 px-4">
                             <h2 class="text-2xl font-bold mb-2">Product Detail</h2>
-                            <p class="text-sm mb-4">
-                            Men Self Design Round Neck Polyester Black T-Shirt
+                            <p class="mb-4 mt-5 font-serif text-base font-bold">
+                            {productDetail.product_name}
                             </p>
                             <div class="flex mb-4">
                                 <div class="mr-4">
                                     <span class="font-bold">Price:</span>
-                                    <span class="">$29.99</span>
+                                    <span class=""> ₹{productDetail.price}</span>
                                 </div>
                                 <div>
                                     <span class="font-bold ">Availability:</span>
@@ -58,11 +86,7 @@ export function ProductDetail(){
                             <div>
                                 <span class="font-bold">Product Description:</span>
                                 <p class="text-sm mt-2">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                                    sed ante justo. Integer euismod libero id mauris malesuada tincidunt. Vivamus commodo nulla ut
-                                    lorem rhoncus aliquet. Duis dapibus augue vel ipsum pretium, et venenatis sem blandit. Quisque
-                                    ut erat vitae nisi ultrices placerat non eget velit. Integer ornare mi sed ipsum lacinia, non
-                                    sagittis mauris blandit. Morbi fermentum libero vel nisl suscipit, nec tincidunt mi consectetur.
+                                    {productDetail.description}
                                 </p>
                             </div>
                         </div>
