@@ -6,20 +6,30 @@ import stack from "./assets/stack.png"
 import { db } from "../firebase"
 import { doc, setDoc, getDoc } from "firebase/firestore"
 import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 // import { useState } from "react"
+import { fetchCate, getCategory } from "../slice/categorySlice"
 
 export function Navbar(){
+    const dispatch = useDispatch();
 
+    const sliceData = useSelector((state) => state.categorySlice);
+    console.log("SlciceData",sliceData);
     const [user, setUser] = useState("");
 
     useEffect(()=>{
+        const categoryData = async () => {
+            const category = await fetchCate();
+            dispatch(getCategory(category.data));
+        }
+        categoryData();
         const data = JSON.parse(localStorage.getItem('user'));
-        if(data != "")
+        if(data != null)
         {
-            setUser(data);
+            setUser(data[0]);
             // console.log(data);
         }
-    });
+    }, []);
 
     function signup(){
         let htmlFormsignup = document.getElementById("signupform");
@@ -45,7 +55,10 @@ export function Navbar(){
                 pinCode : document.getElementById("pincode").value,
             });
             // alert("Sign up successfully");
-            localStorage.setItem("user", JSON.stringify(document.getElementById("fname").value+" "+document.getElementById("lname").value));
+            const localData = [document.getElementById("fname").value+" "+document.getElementById("lname").value,phone]
+            var data = JSON.stringify(localData);
+            localStorage.setItem("user",data);
+            // localStorage.setItem("user", [JSON.stringify(document.getElementById("fname").value+" "+document.getElementById("lname").value),phone]);
             location.replace(location.href);
             // document.getElementById("signupform").style.display = "none";
         }
@@ -98,11 +111,11 @@ export function Navbar(){
                     </svg>
                     </button> */}
                     {/* Dark Mode */}
-                    {/* {
-                        user ?(<p id="logged-user" onClick={logout}>{user}</p>):(<p id="signup" onClick={signup}>Sign Up</p>)
-                    } */}
-                    <p id="signup">Sign Up</p>
-                    <p id="signup">Login</p>
+                    {
+                        user ?(<p id="logged-user" onClick={logout}>Welcome, {user}</p>):(<p id="signup" onClick={signup}>Sign Up</p>)
+                    }
+                    {/* <p id="signup">Sign Up</p>
+                    <p id="signup">Login</p> */}
                     <NavLink to="/cart">
                         <div id="cart-cont">
                             <img src={cart} width={30} className="mr-1" id="cart-icon"/>

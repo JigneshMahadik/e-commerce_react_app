@@ -18,22 +18,54 @@ export function Banner(){
     },[]);
     
     async function getProductOnLoad(){
-        const products = await axios.get("http://127.0.0.1:8000/api/products");
+        const products = await axios.get("https://ecomm.techrenuka.com/api/products");
         setProducts(products.data.data);
     }
 
     async function getCategories(){
-        const res = await axios.get("http://127.0.0.1:8000/api/categories");
-        // console.log(res.data.data);
+        const res = await axios.get("https://ecomm.techrenuka.com/api/categories");
+        console.log(res.data.data);
         setCategory(res.data.data);
     }
     async function selectedCategory(id){
         if(id.target.value != 0){
             // console.log("products",id.target.value);
-            const res = await axios.get(`http://127.0.0.1:8000/api/category/${id.target.value}/product`);
+            const res = await axios.get(`https://ecomm.techrenuka.com/api/category/${id.target.value}/product`);
             // console.log("products",res.data.data);
             setProducts(res.data.data);
         }
+    }
+
+    async function btnAddToCart(id){
+        // e.preventDefault();
+        // const proId = id;
+        // console.log("jack",proId);
+        const res = await axios.get(`https://ecomm.techrenuka.com/api/product/${id}`);
+        console.log(res.data.data);
+        const cartId = res.data.data.description
+        console.log(cartId);
+        // try{
+        //     await setDoc(doc(db,"cartData", phone),{
+        //         firstName : document.getElementById("fname").value,
+        //         lastName : document.getElementById("lname").value,
+        //         mobile : phone,
+        //         email : document.getElementById("email").value,
+        //         password : document.getElementById("password").value,
+        //         address : document.getElementById("address").value,
+        //         pinCode : document.getElementById("pincode").value,
+        //     });
+        //     // alert("Sign up successfully");
+        //     const localData = [document.getElementById("fname").value+" "+document.getElementById("lname").value,phone]
+        //     var data = JSON.stringify(localData);
+        //     localStorage.setItem("user",data);
+        //     // localStorage.setItem("user", [JSON.stringify(document.getElementById("fname").value+" "+document.getElementById("lname").value),phone]);
+        //     location.replace(location.href);
+        //     // document.getElementById("signupform").style.display = "none";
+        // }
+        // catch (error) {
+        //     console.error("Error adding document: ", error);
+        //     alert("Error signing up. Please try again later.");
+        // }
     }
 
     return(
@@ -76,7 +108,7 @@ export function Banner(){
                                             {pro.product_name}
                                         </div>
                                         </NavLink>
-                                        <div id="btn-cart">Add to Cart</div>
+                                        <div id="btn-cart" onClick={()=>btnAddToCart(pro.id)}>Add to Cart</div>
                                     </div>
                                 )
                             })

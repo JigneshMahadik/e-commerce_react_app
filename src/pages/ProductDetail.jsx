@@ -15,7 +15,7 @@ export function ProductDetail(){
     },[])
 
     async function getProductDetail(){
-        const res = await axios.get(`http://127.0.0.1:8000/api/product/${param.product_id}`)
+        const res = await axios.get(`https://ecomm.techrenuka.com/api/product/${param.product_id}`)
         setProductDetail(res.data.data);
         // console.log(res.data.data);
 
